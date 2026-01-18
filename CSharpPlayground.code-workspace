@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "CSharpPlayground",
+			"path": "../CSharpPlayground"
+		},
+		{
+			"name": "FRAServiceRequestPortal",
+			"path": "."
+		}
+	],
+	"settings": {}
+}

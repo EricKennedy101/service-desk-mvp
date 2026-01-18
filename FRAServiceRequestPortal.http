@@ -1,0 +1,6 @@
+@FRAServiceRequestPortal_HostAddress = http://localhost:5249
+
+GET {{FRAServiceRequestPortal_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,46 @@
+# Build artifacts
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Logs
+*.log
+
+# Test results
+TestResults/
+
+# Publish outputs
+**/publish/
+**/Publish/
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Local secrets
+appsettings.Development.json
+secrets.json
+*.pfx
+*.snk
+

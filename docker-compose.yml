@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: fra-postgres
+    environment:
+      POSTGRES_USER: fra_user
+      POSTGRES_PASSWORD: fra_password
+      POSTGRES_DB: fra_service_portal
+    ports:
+      - "5432:5432"
+    volumes:
+      - fra_pgdata:/var/lib/postgresql/data
+
+volumes:
+  fra_pgdata:
