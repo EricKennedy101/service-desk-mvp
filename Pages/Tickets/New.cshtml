@@ -1,0 +1,62 @@
+@page "/tickets/new"
+@model FRAServiceRequestPortal.Pages.Tickets.NewModel
+
+<div class="page page-container">
+    <h1>New Ticket</h1>
+    <p class="subtitle">Submit a support request to the service desk.</p>
+
+    <form class="card form" method="post">
+        <label class="field">
+            <span>Email</span>
+            <input type="email" name="RequesterEmail" value="@Model.RequesterEmail" required />
+        </label>
+
+        <label class="field">
+            <span>Title</span>
+            <input type="text" name="Title" value="@Model.Title" required maxlength="200" />
+        </label>
+
+        <label class="field">
+            <span>Description</span>
+            <textarea rows="4" name="Description" required>@Model.Description</textarea>
+        </label>
+
+    <label class="field">
+        <span>Transcript (optional)</span>
+        <textarea rows="4" name="TranscriptText" placeholder="Paste any relevant transcript text (optional).">@Model.TranscriptText</textarea>
+    </label>
+
+        <label class="field">
+            <span>Category</span>
+            <select name="Category" required>
+                <option value="General" selected>General</option>
+                <option value="Account">Account</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Network">Network</option>
+                <option value="Software">Software</option>
+            </select>
+        </label>
+
+        <label class="field">
+            <span>Priority</span>
+            <select name="Priority" required>
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+            </select>
+        </label>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="error">@Model.ErrorMessage</div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="hint">@Model.SuccessMessage</div>
+        }
+
+        <button class="button primary" type="submit">Submit Ticket</button>
+    </form>
+</div>

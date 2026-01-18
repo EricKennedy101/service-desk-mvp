@@ -50,7 +50,11 @@ public class CasesController : ControllerBase
             {
                 ".txt", ".log", ".csv", ".json", ".png", ".jpg", ".jpeg", ".pdf", ".docx", ".xlsx", ".pptx", ".zip"
             };
-        _evidenceRootPath = configuration["EvidenceUpload:RootPath"] ?? "EvidenceUploads";
+        var configuredRootPath = configuration["EvidenceUpload:RootPath"] ?? "EvidenceUploads";
+        var expandedRootPath = Environment.ExpandEnvironmentVariables(configuredRootPath);
+        _evidenceRootPath = Path.IsPathRooted(expandedRootPath)
+            ? expandedRootPath
+            : Path.Combine(_environment.ContentRootPath, expandedRootPath);
     }
 
     [HttpGet]
@@ -306,8 +310,10 @@ public class CasesController : ControllerBase
     }
 
     [HttpPost("{id:int}/evidence")]
-    public async Task<ActionResult<CaseEvidence>> UploadEvidence(int id, [FromForm] IFormFile file)
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<CaseEvidence>> UploadEvidence(int id, [FromForm] EvidenceUploadRequest request)
     {
+        var file = request.File;
         if (file is null || file.Length == 0)
         {
             return BadRequest(new { message = "File is required and must be non-empty." });
@@ -355,7 +361,7 @@ public class CasesController : ControllerBase
         _dbContext.CaseEvidence.Add(evidence);
         await _dbContext.SaveChangesAsync();
 
-        var evidenceDirectory = Path.Combine(_environment.ContentRootPath, _evidenceRootPath, id.ToString());
+        var evidenceDirectory = Path.Combine(_evidenceRootPath, id.ToString());
         Directory.CreateDirectory(evidenceDirectory);
 
         var storagePath = Path.Combine(evidenceDirectory, $"{evidence.Id}_{safeFileName}");
@@ -479,5 +485,10 @@ public class CasesController : ControllerBase
 
         hasher.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
         return Convert.ToHexString(hasher.Hash ?? Array.Empty<byte>()).ToLowerInvariant();
+    }
+
+    public sealed class EvidenceUploadRequest
+    {
+        public IFormFile? File { get; set; }
     }
 }

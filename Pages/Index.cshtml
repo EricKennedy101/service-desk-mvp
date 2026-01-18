@@ -1,0 +1,51 @@
+@page
+@model FRAServiceRequestPortal.Pages.IndexModel
+@inject IConfiguration Configuration
+@{
+    var isPortalOnly = !string.IsNullOrWhiteSpace(Configuration["BackendApi:BaseUrl"]);
+    var portalTitle = isPortalOnly ? "FRA Employee Support Portal" : "FRA Service Request Portal";
+    var portalSubtitle = isPortalOnly
+        ? "Submit IT/support requests and track ticket status."
+        : "Manage service desk cases and evidence workflow.";
+    var secondaryLabel = isPortalOnly ? "Support" : "Dashboard";
+    var secondaryHref = isPortalOnly ? "/support" : "/dashboard";
+}
+
+<div class="page">
+    @if (!isPortalOnly)
+    {
+        <h1>@portalTitle</h1>
+        <p class="subtitle">@portalSubtitle</p>
+
+        <div class="cta-row">
+            <a class="button primary" href="/login">Login</a>
+            <a class="button ghost" href="@secondaryHref">@secondaryLabel</a>
+        </div>
+
+        <div class="status-panel">
+            <div><span class="label">API Status</span></div>
+            <div class="status-row">
+                <span>API:</span>
+                @if (Model.ApiStatus == "ok")
+                {
+                    <span class="ok">OK</span>
+                }
+                else
+                {
+                    <span class="fail">FAIL</span>
+                }
+            </div>
+            <div class="status-row">
+                <span>DB:</span>
+                @if (Model.DbStatus == "ok")
+                {
+                    <span class="ok">OK</span>
+                }
+                else
+                {
+                    <span class="fail">FAIL</span>
+                }
+            </div>
+        </div>
+    }
+</div>

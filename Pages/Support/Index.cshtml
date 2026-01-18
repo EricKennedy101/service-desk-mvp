@@ -1,0 +1,25 @@
+@page
+@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment Env
+
+<div class="page page-container">
+    <div class="page-header">
+        <h1>Employee Support Portal</h1>
+        <span class="env-badge">@((Env.IsStaging()) ? "STAGING" : "PRODUCTION")</span>
+    </div>
+
+    <div class="card-grid">
+        <a class="card-link" href="/tickets/new">
+            <div class="card">
+                <div class="card-title">Submit Ticket</div>
+                <div class="card-body">Send a support request directly to the service desk.</div>
+            </div>
+        </a>
+        <a class="card-link" href="/tickets">
+            <div class="card">
+                <div class="card-title">My Tickets</div>
+                <div class="card-body">Review your submitted support tickets.</div>
+            </div>
+        </a>
+    </div>
+</div>

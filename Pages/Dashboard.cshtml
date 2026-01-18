@@ -1,0 +1,80 @@
+@page
+@model FRAServiceRequestPortal.Pages.DashboardModel
+@inject IConfiguration Configuration
+@{
+    var isPortalOnly = !string.IsNullOrWhiteSpace(Configuration["BackendApi:BaseUrl"]);
+    var portalTitle = isPortalOnly ? "FRA Employee Support Portal" : "FRA Service Request Portal";
+    var portalSubtitle = isPortalOnly ? "Support overview" : "Service desk overview";
+}
+
+<div class="page">
+    <h1>@portalTitle</h1>
+    <p class="subtitle">@portalSubtitle</p>
+
+    @if (!isPortalOnly)
+    {
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">Cases</div>
+                <div class="card-body">Manage service desk cases.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Evidence</div>
+                <div class="card-body">Upload and review supporting evidence.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Events</div>
+                <div class="card-body">Track case history and updates.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">API Health</div>
+                <div class="card-body">
+                    @if (Model.ApiStatus == "ok")
+                    {
+                        <span class="ok">OK</span>
+                    }
+                    else
+                    {
+                        <span class="fail">FAIL</span>
+                    }
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">DB Health</div>
+                <div class="card-body">
+                    @if (Model.DbStatus == "ok")
+                    {
+                        <span class="ok">OK</span>
+                    }
+                    else
+                    {
+                        <span class="fail">FAIL</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">My Tickets</div>
+                <div class="card-body">
+                    Review and track your requests.
+                    @if (Model.TicketCount.HasValue)
+                    {
+                        <div class="hint">Current tickets: @Model.TicketCount</div>
+                    }
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Support</div>
+                <div class="card-body">Start a new support request.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Updates</div>
+                <div class="card-body">Track ticket status changes.</div>
+            </div>
+        </div>
+    }
+</div>

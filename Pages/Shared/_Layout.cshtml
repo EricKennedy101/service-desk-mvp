@@ -1,0 +1,60 @@
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Http
+@inject IWebHostEnvironment Env
+@inject IConfiguration Configuration
+@{
+    var isLoggedIn = Context.Session.GetString("IsLoggedIn") == "true";
+    var isPortalOnly = !string.IsNullOrWhiteSpace(Configuration["BackendApi:BaseUrl"]);
+    var portalTitle = isPortalOnly ? "FRA Employee Support Portal" : "FRA Service Request Portal";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@portalTitle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/site.css" />
+</head>
+<body>
+    <header class="top-nav">
+        <div class="brand">
+            @portalTitle
+            @if (isPortalOnly)
+            {
+                <span class="phase-pill">Phase 2 (Employee Support)</span>
+            }
+        </div>
+        <nav class="nav-links">
+            @if (isPortalOnly)
+            {
+                <a href="/support">Support</a>
+                <a href="/tickets">My Tickets</a>
+            }
+            else
+            {
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/cases">Cases</a>
+                @if (Env.IsStaging())
+                {
+                    <a href="/swagger/index.html">Swagger</a>
+                }
+            }
+        </nav>
+        <div class="nav-right">
+            @if (isLoggedIn)
+            {
+                <a class="logout" href="/logout">Logout</a>
+            }
+            else if (!isPortalOnly)
+            {
+                <a href="/login">Login</a>
+            }
+        </div>
+    </header>
+
+    <main class="content">
+        @RenderBody()
+    </main>
+</body>
+</html>

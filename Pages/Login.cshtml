@@ -1,0 +1,75 @@
+@page
+@model FRAServiceRequestPortal.Pages.LoginModel
+@inject IConfiguration Configuration
+@{
+    var isPortalOnly = !string.IsNullOrWhiteSpace(Configuration["BackendApi:BaseUrl"]);
+    var portalTitle = isPortalOnly ? "FRA Employee Support Portal" : "FRA Service Request Portal";
+}
+
+<div class="page auth-page">
+    <div class="portal-header">
+        <div class="seal">FRA</div>
+        <div>
+            <h1>@portalTitle</h1>
+            <p class="subtitle">Secure access for authorized users</p>
+        </div>
+    </div>
+
+    <div class="card form auth-card">
+        <div class="env-badge">@Model.EnvironmentBadge</div>
+
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <label class="field">
+                <span>Email</span>
+                <input type="email" name="Email" value="@Model.Email" required />
+            </label>
+
+            <label class="field">
+                <span>Password</span>
+                <input type="password" name="Password" required />
+            </label>
+
+            @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+            {
+                <div class="error">@Model.ErrorMessage</div>
+            }
+
+            <button type="submit" class="button primary full">Sign in</button>
+        </form>
+
+        <div class="links-row">
+            <a href="/forgot-password">Forgot password?</a>
+            <a href="mailto:access@fra.local">Need access?</a>
+        </div>
+
+        @if (!isPortalOnly)
+        {
+            <div class="status-panel">
+                <div><span class="label">System status</span></div>
+                <div class="status-row">
+                    <span>API:</span>
+                    @if (Model.ApiStatus == "ok")
+                    {
+                        <span class="ok">OK</span>
+                    }
+                    else
+                    {
+                        <span class="fail">FAIL</span>
+                    }
+                </div>
+                <div class="status-row">
+                    <span>DB:</span>
+                    @if (Model.DbStatus == "ok")
+                    {
+                        <span class="ok">OK</span>
+                    }
+                    else
+                    {
+                        <span class="fail">FAIL</span>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

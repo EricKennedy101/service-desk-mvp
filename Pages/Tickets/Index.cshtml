@@ -1,0 +1,13 @@
+@page "/tickets"
+
+<div class="page page-container">
+    <h1>My Tickets</h1>
+    <p class="subtitle">No tickets yet (Slice 23 will list them).</p>
+
+    @if (TempData["TicketCreated"] is string ticketMessage)
+    {
+        <div class="hint">@ticketMessage</div>
+    }
+
+    <a class="button primary" href="/tickets/new">New Ticket</a>
+</div>

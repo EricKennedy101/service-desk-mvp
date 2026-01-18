@@ -1,0 +1,22 @@
+@page
+@model FRAServiceRequestPortal.Pages.CasesModel
+@inject IConfiguration Configuration
+@{
+    var isPortalOnly = !string.IsNullOrWhiteSpace(Configuration["BackendApi:BaseUrl"]);
+}
+
+<div class="page">
+    <h1>@(isPortalOnly ? "Tickets" : "Cases")</h1>
+    <p class="subtitle">
+        @(isPortalOnly ? "Ticket list view will be added in Slice 23." : "Case list view will be added in a future slice.")
+    </p>
+    <div class="card">
+        <div class="card-body">
+            @(isPortalOnly ? "Use the Support portal to create tickets." : "Create and manage service desk cases.")
+            @if (Model.TicketCount.HasValue)
+            {
+                <div class="hint">Current tickets: @Model.TicketCount</div>
+            }
+        </div>
+    </div>
+</div>

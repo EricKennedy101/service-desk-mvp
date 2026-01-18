@@ -4,32 +4,39 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FRAServiceRequestPortal.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public class SqlServerAppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public SqlServerAppDbContext(DbContextOptions<SqlServerAppDbContext> options)
         : base(options)
     {
     }
 
-    public DbSet<Case> Cases => Set<Case>();
-
-    public DbSet<CaseEvent> CaseEvents => Set<CaseEvent>();
-
-    public DbSet<CaseEvidence> CaseEvidence => Set<CaseEvidence>();
-
-    public DbSet<Ticket> Tickets => Set<Ticket>();
+    public DbSet<Case> Cases { get; set; } = default!;
+    public DbSet<CaseEvent> CaseEvents { get; set; } = default!;
+    public DbSet<CaseEvidence> CaseEvidence { get; set; } = default!;
+    public DbSet<Ticket> Tickets { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Case>(entity =>
         {
+            entity.ToTable("Cases");
             entity.Property(c => c.Status).HasConversion<string>();
             entity.Property(c => c.Priority).HasConversion<string>();
             entity.Property(c => c.Severity).HasConversion<string>();
         });
 
+        modelBuilder.Entity<CaseEvent>(entity =>
+        {
+            entity.ToTable("CaseEvents");
+            entity.HasOne<Case>()
+                .WithMany()
+                .HasForeignKey(e => e.CaseId);
+        });
+
         modelBuilder.Entity<CaseEvidence>(entity =>
         {
+            entity.ToTable("CaseEvidence");
             entity.HasOne<Case>()
                 .WithMany()
                 .HasForeignKey(e => e.CaseId)
@@ -38,6 +45,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Ticket>(entity =>
         {
+            entity.ToTable("Tickets");
             entity.Property(t => t.Title).HasMaxLength(200).IsRequired();
             entity.Property(t => t.Category).HasMaxLength(50).IsRequired();
             entity.Property(t => t.Priority).HasMaxLength(20).IsRequired();
