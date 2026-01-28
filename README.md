@@ -8,9 +8,17 @@ See `docs/deploy-azure.md` for Azure production + staging slot setup.
 
 See `docs/slices.md` for the slice-by-slice implementation summary.
 
-## Local Dev (Azure SQL)
+## Local Dev (LocalDB)
 
-Paste your Azure SQL ADO.NET connection string into `appsettings.Development.json` under `ConnectionStrings:DefaultConnection`. Replace `{your_password}` with the actual password, and do not commit secrets (the file is already in `.gitignore`).
+Local development uses SQL Server LocalDB.
+
+Apply migrations and run:
+- Restore: `dotnet restore`
+- Apply EF migrations: `dotnet ef database update --context SqlServerAppDbContext`
+- Run API: `dotnet run`
+- Open Swagger: `http://localhost:5249/swagger`
+
+A development-only seed user is available for local testing (see Auth section).
 
 ## Local Run
 
