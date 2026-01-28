@@ -50,10 +50,20 @@ if (!isPortalOnly)
             }
         });
     });
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    builder.Services.AddDbContext<SqlServerAppDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (builder.Environment.IsDevelopment())
+    {
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(connectionString));
+        builder.Services.AddDbContext<SqlServerAppDbContext>(options =>
+            options.UseSqlServer(connectionString));
+    }
+    else
+    {
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(connectionString));
+    }
 }
 builder.Services.AddHttpClient("BackendApi", client =>
 {

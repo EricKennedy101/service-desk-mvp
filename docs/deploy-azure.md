@@ -89,8 +89,8 @@ az webapp deploy -g fra-rg -n <app-name> --src-path ./publish
 Run migrations **locally** using the Azure SQL connection string:
 ```
 dotnet ef database update \
-  --project "C:\dev\forterra-dev\FRAServiceRequestPortal\FRAServiceRequestPortal.csproj" \
-  --startup-project "C:\dev\forterra-dev\FRAServiceRequestPortal\FRAServiceRequestPortal.csproj" \
+  --project "C:\dev\service-desk-mvp\FRAServiceRequestPortal.csproj" \
+  --startup-project "C:\dev\service-desk-mvp\FRAServiceRequestPortal.csproj" \
   -- --ConnectionStrings:DefaultConnection "<AZURE_SQL_CONNECTION_STRING>"
 ```
 
