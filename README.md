@@ -1,5 +1,16 @@
 # FRAServiceRequestPortal
 
+## Environments
+
+- Local development uses a local database and environment-specific configuration.
+- Azure staging runs the full system with managed configuration and cloud hosting.
+- This repository contains source code only. Secrets, databases, and infrastructure
+  are intentionally not included.
+
+See the staging demo video for a live end-to-end walkthrough.
+https://www.loom.com/share/172099b3a6114af2b0087ecc5a638997
+
+
 ## Deployment
 
 See `docs/deploy-azure.md` for Azure production + staging slot setup.
